@@ -38,17 +38,17 @@ Chile,85822
 China,9893038
 Colombia,814
 Comoros,202
-Republic of the Congo,3282
+Dem.Rep.Congo,3282
 Costa Rica,8023
 Croatia,17488
 Cuba,28284
 Cyprus,6626
-Czech Republic,102218
+Czechia,102218
 Democratic Republic of the Congo,2021
 Denmark,31786
 Djibouti,620
 Dominica,180
-Dominican Republic,25258
+Dominican Rep.,25258
 Ecuador,41155
 Egypt,238560
 El Salvador,7169
@@ -80,7 +80,7 @@ India,2407672
 Indonesia,563325
 Iran,661710
 Iraq,190061
-Republic of Ireland,37711
+Ireland,37711
 Israel,65166
 Italy,320411
 Jamaica,8225
@@ -184,7 +184,7 @@ Uganda,5680
 Ukraine,202250
 United Arab Emirates,206324
 United Kingdom,379025
-United States,5006302
+United States of America,5006302
 Uruguay,6766
 Uzbekistan,91811
 Vanuatu,147
@@ -193,3 +193,12 @@ Vietnam,192668
 Yemen,10609
 Zambia,5141
 Zimbabwe,10983
+Somaliland,15695
+Gambia,1325
+Puerto Rico,6542
+Bosnia,6558
+Kosovo,12365
+W.Sahara,680
+Bahamas,1680
+Antarctica,106
+Taiwan,9893038

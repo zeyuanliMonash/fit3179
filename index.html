@@ -32,111 +32,292 @@
         }
     </style>
 </head>
-
+<body>
+    
+</body>
 <body>
 
-    <h1>CO2 Emissions by Country (2023)</h1>
-    <p>This visualization depicts the CO2 emissions by country for the year 2023.</p>
+
+    
+    <h1>Earthquake Map Visualization</h1> <!-- New Section -->
+    <p>This visualization depicts the locations of earthquakes from 1995 to 2023.</p>
+    <div id="vis1"></div> <!-- Second visualization container -->
+    
+
+    <h1>The magnitude of Earthquakes Over Time (1995-2023)</h1>
+    <p>This visualization depicts the frequency and magnitude of earthquakes from 1995 to 2023.</p>
     <div id="vis"></div>
     <p>The data is sourced from Kaggle and processed to be visualized on this platform.</p>
-
     <script type="text/javascript">
-        const spec = {
-    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "CO2 Emissions by Country (2023)",
+        const spec = { "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
     "width": 800,
-    "height": 400,
-    "projection": {
-        "type": "equalEarth"
+    "height": 600,
+    "title": "Earthquakes Over Time",
+    "data": {
+      "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/earthquake_1995-2023.csv"
     },
-    "layer": [
-     
-        {
-            "data": {"sphere": "world"},
-            "mark": {
-                "type": "geoshape",
-                "fill": "#27aedba2"
-            }
-        },
-        
-        {
-            "data": {
-                "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/ne_110m.json",
-                "format": {
-                    "type": "topojson",
-                    "feature": "ne_110m_graticules_30"
-                }
-            },
-            "mark": {
-                "type": "geoshape",
-                "fill": "transparent",
-                "stroke": "gray",
-                "strokeWidth": 0.5
-            }
-        },
-        
-        {
-            "data": {
-                "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/ne_110m.json",
-                "format": {
-                    "type": "topojson",
-                    "feature": "ne_110m_admin_0_countries"
-                }
-            },
-            "transform": [
-                {
-                    "lookup": "properties.NAME",
-                    "from": {
-                        "data": {
-                            "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/world-data-2023.csv"
-                        },
-                        "key": "Country",
-                        "fields": ["Co2-Emissions"]
-                    }
-                },
-                {
-                    "calculate": "datum['Co2-Emissions'] > 0 ? datum['Co2-Emissions'] + 0.1 : 0.1",
-                    "as": "Adjusted Co2-Emissions"
-                }
-            ],
-            "mark": {
-                "type": "geoshape"
-            },
-            "encoding": {
-                "color": {
-                    "field": "Adjusted Co2-Emissions",
-                    "type": "quantitative",
-                    "scale": {
-                        "type": "log",
-                        "domain": [100, 1000, 10000, 100000, 1000000, 10000000, 100000000],
-                        "range": ["#fdd0a2", "#f8b085", "#f16913", "#d94801", "#a63603", "#7f2704", "#3c0000"]
-                    },
-                    "legend": {
-                        "title": "CO2 Emissions",
-                        "values": [100, 1000, 10000, 100000, 1000000,10000000, 100000000]
-                    }
-                },
-                "tooltip": [
-                    {
-                        "field": "properties.NAME",
-                        "type": "nominal",
-                        "title": "Country"
-                    },
-                    {
-                        "field": "Co2-Emissions",
-                        "type": "quantitative",
-                        "title": "CO2 Emissions (Million Metric Tons)"
-                    }
-                ]
-            }
+    "params": [
+      {
+        "name": "Magnitude_Above",
+        "value": 5.5,
+        "bind": {
+          "input": "range",
+          "min": 5.5,
+          "max": 9.5,
+          "step": 0.1,
+          "name": " Display Earthquakes with Magnitude Above: "
         }
-    ]
-};
+      },
+      {
+        "name": "show_all",
+        "value": false,
+        "bind": {
+          "input": "checkbox",
+          "name": "Show All"
+        }
+      }
+    ],
+    "transform": [
+      {
+        "filter": "show_all || datum.magnitude >= Magnitude_Above"
+      }
+    ],
+    "mark": {
+        "type": "point",
+        "filled": true
+      },
+    
+    "encoding": {
+        "y": {
+            "field": "data_time",
+            "type": "temporal",
+            "title": "Date and Time",
+            "scale": {
+              "domain": ["1995-01-01", "2023-12-31"]
+            }
+          },
+          
+      "x": {
+        "field": "magnitude",
+        "type": "quantitative",
+        "title": "Magnitude",
+        "scale": {
+            "domain": [6.4, 9.5]
+          }
+      },
+      "color": {
+        "field": "magnitude",
+        "type": "quantitative",
+        "scale": {
+            "domain": [6.7, 7, 8, 9, 9.5],
+            "range": ["#fdd0a2", "#f8b085", "#f16913", "#d94801", "#a63603", "#7f2704"]
+          },
+        "title": "Magnitude"
+      },
+      "size": {
+        "field": "magnitude",
+        "type": "quantitative",
+        "scale": {
+            "domain": [6, 9]
+          }
+      },
+      "tooltip": [
+        {"field": "title", "type": "nominal"},
+        {"field": "magnitude", "type": "quantitative"},
+        {"field": "depth", "type": "quantitative"},
+        {"field": "data_time", "type": "temporal"}
+      ]
+    }
+            
+
+}
+
+
+
 
 
         vegaEmbed("#vis", spec, {
             mode: "vega-lite"
         }).then(console.log).catch(console.warn);
+        const spec1 = {
+            
+            "data": {
+    "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/earthquake_1995-2023.csv"
+  },
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "vconcat": [
+    {
+      "title": "trend",
+      "width": 800,
+      "height": 400,
+      "projection": {
+        "type": "equalEarth",
+        "rotate": [-140.0, 0]
+      },
+      "layer": [
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/ne_110m.json",
+            "format": {
+              "type": "topojson",
+              "feature": "ne_110m_graticules_30"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "transparent",
+            "stroke": "gray",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "data": {
+            "url": "https://raw.githubusercontent.com/zeyuanliMonash/fit3179/main/ne_110m.json",
+            "format": {
+              "type": "topojson",
+              "feature": "ne_110m_admin_0_countries"
+            }
+          },
+          "mark": {
+            "type": "geoshape",
+            "fill": "lightgray"
+          }
+        },
+        {
+          "transform": [
+            {
+              "calculate": "year(datum.data_time)",
+              "as": "year"
+            }
+          
+            
+          ],
+  
+          "mark": "circle",
+          "encoding": {
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "color": {
+              "field": "magnitude",
+              "type": "quantitative",
+              "scale": {
+                "type": "log",
+                "domain": [5, 6, 7, 8, 9, 10],
+                "range": ["#fdd0a2", "#f8b085", "#f16913", "#d94801", "#a63603", "#7f2704"]
+              },
+              "legend": {
+                "title": "The magnitude of the earthquake",
+                "values": [5, 6, 7, 8, 9, 10]
+              }
+            },
+            
+            "tooltip": [
+              {
+                "field": "title",
+                "type": "nominal",
+                "title": "Earthquake name"
+              },
+              {
+                "field": "magnitude",
+                "type": "quantitative",
+                "title": "magnitude"
+              },
+              {
+                "field": "depth",
+                "type": "quantitative",
+                "title": "The depth where the earthquake begins to rupture km"
+              },
+              {
+                "field": "data_time",
+                "type": "temporal",
+                "title": "Date and Time"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {
+              "window": [
+                {
+                  "op": "rank",
+                  "as": "rank"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "depth",
+                  "order": "descending"
+                }
+              ]
+            },
+            {
+              "filter": "datum.rank <= 5"
+            },
+            {
+              "calculate": "'Top: ' + datum.rank + ' Depth: ' + datum.depth",
+              "as": "annotation"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "color": "black",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "font": "Arial",
+            "align": "center",
+            "baseline": "middle"
+          },
+          "encoding": {
+            "text": {
+              "field": "annotation",
+              "type": "nominal"
+            },
+            "longitude": {
+              "field": "longitude",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "latitude",
+              "type": "quantitative"
+            },
+            "tooltip": [
+              {
+                "field": "title",
+                "type": "nominal",
+                "title": "Earthquake Title"
+              },
+              {
+                "field": "magnitude",
+                "type": "quantitative",
+                "title": "Magnitude"
+              },
+              {
+                "field": "depth",
+                "type": "quantitative",
+                "title": "Depth"
+              },
+              {
+                "field": "data_time",
+                "type": "temporal",
+                "title": "Date and Time"
+              }
+            ]
+          }
+        }
+      ]
+    }
+    
+  ]
+        };
+
+        vegaEmbed("#vis1", spec1, { mode: "vega-lite" }).then(console.log).catch(console.warn);
     </script>
 
 </body>
